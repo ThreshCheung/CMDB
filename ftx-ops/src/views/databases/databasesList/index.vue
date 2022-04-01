@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table style="width: 100%" border :data="data">
+    <el-table style="width: 100%" border :data="instanceList">
       <el-table-column prop="id" label="序号" width="80%" align="center">
       </el-table-column>
       <el-table-column prop="hostname" label="数据库名称" width="width">
@@ -84,8 +84,10 @@
               ref="tree"
               show-checkbox
               @check="selectNode"
+              @node-click="handleNodeClick"
               node-key="id"
               @node-expand="handleNodeExpand"
+              check-on-click-node
             >
             </el-tree>
           </el-scrollbar>
@@ -98,9 +100,9 @@
             <el-table :data="databaseAndTable" style="width: 100%">
               <el-table-column prop="name" label="已选表" width="width">
               </el-table-column>
-              <el-table-column prop="prop" label="回档后表名" width="width">
+              <el-table-column prop="name_bak" label="回档后表名" width="width">
                 <template slot-scope="{ row }">
-                  <el-input v-model="row.name"/>
+                  <el-input v-model="row.name_bak" />
                 </template>
               </el-table-column>
             </el-table>
@@ -127,7 +129,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      data: [],
+      instanceList: [],
       tableList: [],
       instance_id: "",
       limit: 10,
@@ -135,11 +137,8 @@ export default {
       dialogVisible: false,
       choose: "",
       isShow: "普通",
-      rollbackTime: "",
-      strategy: "",
       dataTree: [],
       databaseAndTable: [],
-      databaseAndTableBak:[],
       databaseName: [],
       beginDate: "",
       defaultProps: {
@@ -150,6 +149,10 @@ export default {
       filterText: "",
       pickerOptions: {},
       radio1: "普通",
+      rollbackTime: "",
+      strategy: "",
+      rollbackList: [],
+      instanceId: "",
     };
   },
   methods: {
@@ -158,7 +161,7 @@ export default {
         this.limit,
         this.currentPage
       );
-      this.data = result.data;
+      this.instanceList = result.data;
       this.total = result.count;
       // console.log(result);
     },
@@ -193,6 +196,11 @@ export default {
     },
     nextStep() {
       this.choose = "two";
+      this.databaseAndTable.forEach((list) => {
+        list.name_bak = list.name + "_bak";
+      });
+      console.log(this.databaseAndTable);
+      console.log(this.strategy);
     },
     filterNode(value, data) {
       if (!value) return true;
@@ -200,23 +208,19 @@ export default {
     },
     selectNode(data, obj) {
       this.databaseAndTable = obj.checkedNodes;
-      this.databaseAndTableBak = obj.checkedNodes;
-      console.log(this.databaseAndTableBak);
-      this.databaseAndTable.forEach((list) => {
-        if (list.instance_id) {
-          this.databaseName.push(list);
-          console.log(this.databaseName);
+    },
+    handleNodeClick(data, node) {
+      setTimeout(() => {
+        if (node.level > 1 && node.checked === true) {
+          this.databaseAndTable.forEach((list) => {
+            if (!this.databaseAndTable.name) {
+              list.fatherName = node.parent.data.name;
+            }
+          });
+          console.log(this.databaseAndTable);
+          console.log(node.checked);
         }
-        // for(var i in list){
-        //     console.log(i);
-        //     console.log();
-        //     if(i.instance_id){
-        //       this.databaseName = i
-        //       console.log(this.databaseName);
-        //     }
-        // }
-      });
-      // console.log(this.databaseName);
+      }, 1000);
     },
     async handleNodeExpand(obj, node, self) {
       if (node.level === 1) {
@@ -255,7 +259,7 @@ export default {
       console.log(this.rollbackTime);
     },
     handleCancel() {
-      this.dialogVisible = false
+      this.dialogVisible = false;
       this.tableList = [];
       this.instance_id = "";
       this.choose = "";
