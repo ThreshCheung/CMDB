@@ -27,13 +27,13 @@ export default {
       console.log(result.data);
     },
     async getWsId(){
-      const result = await this.$API.sshList.reqWsId("262")
+      const result = await this.$API.sshList.reqWsId()
       console.log(result);
     }
   },
   mounted() {
-    // this.getSshList()
-    this.getWsId()
+    this.getSshList()
+    // this.getWsId()
     let terminalContainer = document.getElementById("terminal-container");
     let term = new Terminal({
       // 光标闪烁
