@@ -6,7 +6,9 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    prov:[],
+    id:0
   }
 }
 
@@ -24,7 +26,13 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
-  }
+  },
+  SET_PROV: (state, prov) => {
+    state.prov = prov
+  },
+  SET_ID: (state, id) => {
+    state.id = id
+  },
 }
 
 const actions = {
@@ -36,8 +44,11 @@ const actions = {
     console.log(result);
     if (result.code === 20000) {
       commit('SET_TOKEN', result.token)
+      commit('SET_NAME', result.name)
+      commit('SET_PROV', result.prov)
       setToken(result.token)
       console.log('PromiseOk');
+      // localStorage.setItem("store", JSON.stringify(this.$store.state));
       return 'ok'
     } else {
       console.log('PromiseError');
@@ -45,7 +56,7 @@ const actions = {
     }
   },
 
-  // get user info
+  // // get user info
   // getInfo({ commit, state }) {
   //   return new Promise((resolve, reject) => {
   //     getInfo(state.token).then(response => {

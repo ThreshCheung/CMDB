@@ -38,9 +38,10 @@ Vue.config.productionTip = false
 import API from '@/api'
 Vue.prototype.$API = API
 
+
 new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
 })

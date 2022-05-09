@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">name: {{ userName }}</div>
   </div>
 </template>
 
@@ -9,11 +9,20 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
+  data() {
+    return {
+      userName:''
+    }
+  },
   computed: {
     ...mapGetters([
       'name'
     ])
-  }
+  },
+  mounted() {
+    this.userName = localStorage.getItem("name").replace(/^\"|\"$/g, '')
+    console.log(this.userName);
+  },
 }
 </script>
 

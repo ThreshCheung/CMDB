@@ -8,7 +8,7 @@ export function getToken() {
 
 export function setToken(token) {
   console.log(TokenKey,token)
-  return Cookies.set(TokenKey, 'ftx '+token)
+  return Cookies.set(TokenKey, 'ftx '+token,{expires:1})
 }
 
 export function removeToken() {

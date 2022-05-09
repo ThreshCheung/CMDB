@@ -67,40 +67,76 @@ export const constantRoutes = [
         meta:{title:'数据库列表'}
       },
       {
-        path:'test',
-        name:'Test',
-        component:()=>import('@/views/databases/test'),
-        meta:{title:'test'}
+        path:'rollbackLog',
+        name:'rollbackLog',
+        component:()=>import('@/views/databases/rollbackLog'),
+        meta:{title:'查询回档记录'}
       }
     ]
   },
 
   {
-    path: '/example',
+    path: '/cdn',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    meta:{title:'CDN',icon:'el-icon-refresh'},
     children: [
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
+        path: 'cdnTask',
+        name: 'cdnTask',
+        component: () => import('@/views/cdn/cdnTask'),
+        meta: { title: '刷新', icon: 'form' }
+      },
+      {
+        path: 'cdnDiagnose',
+        name: 'cdnDiagnose',
+        component: () => import('@/views/cdn/cdnDiagnose'),
+        meta: { title: '诊断', icon: 'form' }
+      },
     ]
   },
 
   {
-    path: '/form',
+    path: '/cmdb',
     component: Layout,
+    meta:{title:'资产管理',icon:'el-icon-s-platform'},
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
+        path: 'domain',
+        name: 'domain',
+        component: () => import('@/views/cmdb/domain'),
+        meta: { title: '域名', icon: 'table' }
+      },
+      {
+        path: 'serverList',
+        name: 'serverList',
+        component: () => import('@/views/cmdb/serverList'),
+        meta: { title: '服务器列表', icon: 'table' }
+      },
+    ]
+  },
+  {
+    path: '/operation',
+    component: Layout,
+    meta:{title:'操作台',icon:'el-icon-s-platform'},
+    children: [
+      {
+        path: 'webShell',
+        name: 'webShell',
+        component: () => import('@/views/operation/webShell'),
+        meta: { title: 'webShell', icon: 'table' }
+      },
+      {
+        path: 'sqlQuery',
+        name: 'sqlQuery',
+        component: () => import('@/views/operation/sqlQuery'),
+        meta: { title: 'SQL查询', icon: 'table' }
+      },
+      {
+        path: 'webShellTest',
+        name: 'webShellTest',
+        component: () => import('@/views/operation/webShellTest'),
+        meta: { title: 'webShellTest', icon: 'table' }
+      },
     ]
   },
 
