@@ -43,6 +43,11 @@ module.exports = {
         ws: true,
         changeOrigin: true,
         pathRewrite: {'^/api' : '/api'}
+      },
+      '/ssh': {
+        target: 'http://192.168.12.136:8001',
+        ws: true,
+        changeOrigin: true,
       }
     }
   },
