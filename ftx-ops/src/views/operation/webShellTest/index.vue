@@ -1,64 +1,63 @@
 <template>
   <el-container>
     <el-main>
-      
-        <el-card shadow="hover" style="overflow: auto">
-          <div slot="header">
-            <span>选择服务器</span>
-          </div>
-          <div>
-            <el-input
-              placeholder="输入关键字进行过滤"
-              v-model="filterText"
-              style="margin-bottom: 5px"
+      <el-card shadow="hover" style="overflow: auto">
+        <div slot="header">
+          <span>选择服务器</span>
+        </div>
+        <div>
+          <el-input
+            placeholder="输入关键字进行过滤"
+            v-model="filterText"
+            style="margin-bottom: 5px"
+          >
+          </el-input>
+          <el-scrollbar style="height: 690px">
+            <el-tree
+              indent:8
+              :data="baseData"
+              :props="defaultProps"
+              :filter-node-method="filterNode"
+              ref="tree"
+              @node-click="selectHost"
             >
-            </el-input>
-            <el-scrollbar style="height: 690px">
-              <el-tree
-                indent:8
-                :data="baseData"
-                :props="defaultProps"
-                :filter-node-method="filterNode"
-                ref="tree"
-                @node-click="selectHost"
-              >
-              </el-tree>
-            </el-scrollbar>
-          </div>
-        </el-card>
+            </el-tree>
+          </el-scrollbar>
+        </div>
+      </el-card>
     </el-main>
     <el-main>
-        <el-card shadow="hover" style="height: 790px">
-          <div slot="header">
-            <!--            <span>Console</span>-->
-            <span>WebShell 十分钟后自动断开连接</span>
-          </div>
-          <el-tabs
-            closable
-            type="card"
-            :value="JSON.stringify(parseInt(currentIndex))"
-            @tab-remove="handleTabRemove"
+      <el-card shadow="hover" style="height: 790px">
+        <div slot="header">
+          <!--            <span>Console</span>-->
+          <span>WebShell 十分钟后自动断开连接</span>
+        </div>
+        <el-tabs
+          closable
+          type="card"
+          :value="JSON.stringify(parseInt(currentIndex))"
+          @tab-remove="handleTabRemove"
+        >
+          <el-tab-pane
+            v-for="terminal in this.terminalList"
+            :key="terminal.id"
+            :name="JSON.stringify(terminal.pid)"
+            :label="
+              terminal.inner_ip
+                ? terminal.inner_ip +
+                  '【' +
+                  JSON.stringify(terminal.pid + 1) +
+                  '】'
+                : '请选择连接'
+            "
           >
-            <el-tab-pane
-              v-for="terminal in this.terminalList"
-              :key="terminal.id"
-              :name="JSON.stringify(terminal.pid)"
-              :label="
-                terminal.inner_ip
-                  ? terminal.inner_ip +
-                    '【' +
-                    JSON.stringify(terminal.pid + 1) +
-                    '】'
-                  : '请选择连接'
-              "
-            >
-              <div
-                class="console"
-                :id="'terminal-' + JSON.stringify(terminal.pid)"
-              ></div>
-            </el-tab-pane>
-          </el-tabs>
-        </el-card>
+            <div
+              class="console"
+              :id="'terminal-' + JSON.stringify(terminal.pid)"
+            ></div>
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
     </el-main>
   </el-container>
 </template>
@@ -263,6 +262,7 @@ export default {
         this.terminalSocket.onclose = this.closeRealTerminal;
         this.terminalSocket.onerror = this.errorRealTerminal;
         this.term.attach(this.terminalSocket);
+        console.log("attach finished");
         this.term._initialized = true;
         var t = this.terminalSocket;
         var scrollWidth = document.body.scrollWidth;
@@ -313,7 +313,7 @@ export default {
         children: result.data,
         top: 1,
       });
-            console.log(this.baseData)
+      console.log(this.baseData);
       //     })
     },
     termInit() {
@@ -332,8 +332,8 @@ export default {
     },
   },
   mounted() {
-    this.initpro();
     this.termInit();
+    this.initpro();
   },
   beforeDestroy() {
     if (this.globalWs) {
