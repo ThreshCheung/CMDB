@@ -89,7 +89,7 @@
         </el-header>
         <el-main>
           <div>
-            <el-table :data="recordList" style="width: 100%" border>
+            <el-table :data="recordList" style="width: 100%" border @sort-change="sortChange">
               <el-table-column prop="rr" label="主机记录">
                 <template slot-scope="scope">
                   <el-input
@@ -127,7 +127,7 @@
                   <span v-else>{{ scope.row.value }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="update_time" label="最后操作时间">
+              <el-table-column prop="update_time" sortable label="最后操作时间">
               </el-table-column>
               <el-table-column prop="user.username" label="操作人">
               </el-table-column>
@@ -178,6 +178,7 @@
               width="width"
               :before-close="dialogBeforeClose"
             >
+            <h1>{{urlName}}</h1>
               <el-form :model="form">
                 <el-form-item label="主机记录">
                   <el-input
@@ -248,6 +249,7 @@ export default {
         id: "",
       },
       dialogVisible: false,
+      urlName:'',
       form: {
         domainId: "",
         rr: "",
@@ -302,6 +304,7 @@ export default {
     },
     setId(value) {
       this.domainId = value.id;
+      this.urlName = value.name
       this.getRecordList();
     },
     handleSearch() {
@@ -354,6 +357,28 @@ export default {
     onCancel() {
       console.log("!");
     },
+    // compare (propertyName, sort) {
+    //   return function (obj1, obj2) {
+    //     var value1 = obj1[propertyName]
+    //     var value2 = obj2[propertyName]
+    //     if (typeof value1 === 'string' && typeof value2 === 'string') {
+    //       const res = value1.localeCompare(value2, 'zh')
+    //       return sort === 'ascending' ? res : -res
+    //     } else {
+    //       if (value1 <= value2) {
+    //         return sort === 'ascending' ? -1 : 1
+    //       } else if (value1 > value2) {
+    //         return sort === 'ascending' ? 1 : -1
+    //       }
+    //     }
+    //   }
+    // },
+    // sortChange( {prop, order} ) {
+    //   console.log(prop);
+    //   console.log(order);
+    //   this.recordList.sort(this.compare(prop,order));
+    //   console.log("@");
+    // },
   },
   mounted() {
     this.getDomainList();

@@ -38,7 +38,7 @@
         >
           <el-option
             v-for="item in envList"
-            :key="item.name"
+            :key="item.index"
             :label="item.name"
             :value="item"
           >
