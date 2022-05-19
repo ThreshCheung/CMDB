@@ -89,7 +89,7 @@
         </el-header>
         <el-main>
           <div>
-            <el-table :data="recordList" style="width: 100%" border @sort-change="sortChange">
+            <el-table :data="recordList" style="width: 100%" border>
               <el-table-column prop="rr" label="主机记录">
                 <template slot-scope="scope">
                   <el-input

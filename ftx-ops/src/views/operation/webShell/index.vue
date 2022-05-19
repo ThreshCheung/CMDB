@@ -65,7 +65,7 @@
 <script>
 import "xterm/dist/xterm.css";
 // import * as attach from 'xterm/lib/addons/attach/attach'
-import { AttachAddon } from 'xterm-addon-attach'
+// import { AttachAddon } from 'xterm-addon-attach'
 // import { Terminal } from 'xterm'
 // import { Terminal } from "xterm";
 import Terminal from '../../../lib/Xterm'
